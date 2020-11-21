@@ -5,8 +5,35 @@
 <div class="row">
     <div class="col-md-12">
         <h2>Invoice Uploading</h2>
-        <p>
-
-        </p>
+        @using (Html.BeginForm("UploadFiles", "Upload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div>
+                <label for="files">Files</label>
+                <input type="file" id="files" name="files" multiple="multiple" />
+            </div>
+            <button type="submit">Upload files</button>
+        }
     </div>
 </div>
+
+@Scripts.Render("~/bundles/jquery")
+<script>
+    $('#buttonUpload').on('click', function () {
+        var data = new FormData();
+        var files = $("#files").get(0).files;
+
+        if (files.length > 0) {
+            data.append("UploadedImage", files[0]);
+        }
+
+        // Ajax upload  
+        $.ajax({
+            type: "POST",
+            url: $("#formUpload").attr("action"),
+            contentType: false,
+            processData: false,
+            data: data
+        }); 
+
+    });
+</script>

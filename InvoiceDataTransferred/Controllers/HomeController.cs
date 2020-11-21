@@ -12,6 +12,15 @@ namespace InvoiceDataTransferred.Controllers
         {
             return View();
         }
+        public ActionResult Upload()
+        {
+            return View();
+        }
+
+        public ActionResult Search()
+        {
+            return View();
+        }
 
         public ActionResult About()
         {

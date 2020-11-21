@@ -19,24 +19,29 @@ namespace InvoiceDataTransferred.Controllers
         }
 
         [HttpPost]
-        public JsonResult UploadFiles(HttpPostedFileBase[] files)
+        public JsonResult UploadFiles()
         {
+            var httpContext = HttpContext.Request;
+
             using (var client = new HttpClient())
             {
                 using (var formData = new MultipartFormDataContent())
                 {
-                    foreach (var file in files)
+                    if (httpContext.Files.Count > 0)
                     {
                         byte[] fileData;
-                        using (var reader = new BinaryReader(file.InputStream))
+                        using (var reader = new BinaryReader(httpContext.Files[0].InputStream))
                         {
-                            fileData = reader.ReadBytes(file.ContentLength);
+                            fileData = reader.ReadBytes(httpContext.Files[0].ContentLength);
                         }
 
-                        formData.Add(new StreamContent(new MemoryStream(fileData)), "files", file.FileName);
+                        formData.Add(new StreamContent(new MemoryStream(fileData)), "files", httpContext.Files[0].FileName);
+                        var response = client.PostAsync("https://localhost:44398/api/Invoice", formData).Result;
+                        return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
+                    } else
+                    {
+                        return Json(HttpStatusCode.NotFound, JsonRequestBehavior.AllowGet);
                     }
-                    var response = client.PostAsync("https://localhost:44398/api/Invoice", formData).Result;
-                    return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
                 }
             }
         }

@@ -1,0 +1,43 @@
+﻿<div class="jumbotron">
+    <h3>Uploading Invoice Transaction</h3>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h2>Invoice Uploading</h2>
+        <form method="post" action="http://localhost:53309/Upload/UploadFiles" enctype="multipart/form-data" id="formUpload">
+            <div>
+                <label for="files">Files</label>
+                <input type="file" class="form-control" id="files" name="files" />
+            </div>
+            <br /><button type="button" class="btn btn-primary" id="btnUpload">Upload files</button>
+        </form>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+<script>
+    $('#btnUpload').on('click', function () {
+        var data = new FormData();
+        var files = $("#files").get(0).files;
+
+        // Add the uploaded file to the form data collection  
+        if (files.length > 0) {
+            data.append("uploadFiles", files[0]);
+ 
+            $.ajax({
+                type: "POST",
+                url: $("#formUpload").attr("action"),
+                contentType: false,
+                processData: false,
+                data: data,
+                dataType: 'json',
+                success: function (data, textStatus, xhr) {
+                    alert(data);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    alert(textStatus);
+                },
+            });
+        }
+    }); 
+</script>

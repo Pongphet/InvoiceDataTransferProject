@@ -1,0 +1,117 @@
+﻿<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet">
+<div class="jumbotron">
+    <h3>Searching Invoice Transaction</h3>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h2>Invoice Uploading</h2>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <strong>Select criteria:</strong>
+                    @Html.DropDownList("criteria", new SelectList(ViewBag.Criteria), new { @class = "form-control", @id = "criteria" })
+                </div>
+            </div>
+            <div class="col-md-3" id="divKeyword">
+                <div class="form-group">
+                    <strong>Keyword:</strong>
+                    @Html.TextBox("search_val", "", new { @class = "form-control", @id = "search_val" })
+                </div>
+            </div>
+            <div class="col-md-3" id="divStartDate" hidden>
+                <div class="form-group">
+                    <strong>Start Date:</strong>
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control" id="search_startdate" data-date-format="yyyy-mm-dd">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" id="divEndDate" hidden>
+                <div class="form-group">
+                    <strong>End Date:</strong>
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control" id="search_enddate" data-date-format="yyyy-mm-dd">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <button class="btn btn-success" id="btnSearch">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<script>
+    $(document).ready(function () {
+        //$('.datepicker').datepicker({ format: 'yyyy-MM-dd' });
+
+        //$('#datatable').DataTable({
+        //    "processing": true,
+        //    "serverSide": true,
+        //});
+    });
+
+    $('#criteria').change(function () {
+        var criteria = $('#criteria').val();
+
+        if (criteria == "Date Range") {
+            $('#divKeyword').hide();
+            $('#divStartDate').show();
+            $('#divEndDate').show();
+        } else {
+            $('#divKeyword').show();
+            $('#divStartDate').hide();
+            $('#divEndDate').hide();
+        }
+    });
+
+    $('#btnSearch').click(function () {
+        var criteria = $('#criteria').val();
+        var keyword = $('#search_val').val();
+        var startDate = $('#search_startdate').val();
+        var endDate = $('#search_enddate').val();
+        if (criteria == "Date Range") {
+            if ((startDate.length > 0) && (endDate.length > 0)) {
+                GetInvoiceTransaction(criteria, keyword, startDate, endDate);
+            } else {
+                alert("Please select date range!");
+            }
+        }
+        else {
+            if (keyword.length > 0) {
+                GetInvoiceTransaction(criteria, keyword, startDate, endDate);
+            }
+        }
+    });
+
+    function GetInvoiceTransaction(criteria, keyword, startDate, endDate) {
+        var url = new URL("https://localhost:44398/api/Invoice"),
+            params = { criteria: criteria, keyword: keyword, startDate: startDate, endDate: endDate }
+        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+
+        window.location.href = url;
+        //var list = [];
+        //fetch(url, {
+        //    method: 'GET',
+        //    headers: {
+        //        'Content-Type': 'multipart/form-data',
+        //        'Accept': 'application/json'
+        //    },
+        //    mode: 'no-cors',
+        //}).then(function (data) {
+        //    let authors = data.results; // Get the results
+            
+        //    })
+
+    }
+</script>

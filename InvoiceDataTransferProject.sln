@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvoiceDataTransferProject", "InvoiceDataTransferProject\InvoiceDataTransferProject.csproj", "{5C62FAEE-8908-467B-971E-CB76AD942171}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvoiceDataTransferred", "InvoiceDataTransferred\InvoiceDataTransferred.csproj", "{68460A6F-28EA-4A67-8B7C-A797F9F9A42B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{4C23B6F5-D8ED-465A-8CB6-8F2DACF06F6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5C62FAEE-8908-467B-971E-CB76AD942171}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C62FAEE-8908-467B-971E-CB76AD942171}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C62FAEE-8908-467B-971E-CB76AD942171}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C62FAEE-8908-467B-971E-CB76AD942171}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68460A6F-28EA-4A67-8B7C-A797F9F9A42B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68460A6F-28EA-4A67-8B7C-A797F9F9A42B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68460A6F-28EA-4A67-8B7C-A797F9F9A42B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68460A6F-28EA-4A67-8B7C-A797F9F9A42B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C23B6F5-D8ED-465A-8CB6-8F2DACF06F6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C23B6F5-D8ED-465A-8CB6-8F2DACF06F6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C23B6F5-D8ED-465A-8CB6-8F2DACF06F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C23B6F5-D8ED-465A-8CB6-8F2DACF06F6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

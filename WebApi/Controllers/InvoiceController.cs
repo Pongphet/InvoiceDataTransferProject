@@ -15,32 +15,38 @@ namespace WebApi.Controllers
     public class InvoiceController : ApiController
     {
         private InvoiceUploadClass uploadCls = new InvoiceUploadClass();
-
-        [HttpPost]
+        private InquiryInvoiceData inquiryCls = new InquiryInvoiceData();
+     [HttpPost]
         public HttpResponseMessage Post()
         {
             var result = new UploadResult();
             var httpContext = HttpContext.Current;
 
             result = uploadCls.SaveFile(httpContext);
-
             if (result.isSuccess.Equals(true))
             {
                 uploadCls.SubmitInvoiceTransaction(result.InvoiceDataTransaction);
-                return Request.CreateResponse(HttpStatusCode.OK);
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, result);
+                return response;
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                var resp = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ReasonPhrase = result.ValidationMessage
+                };
+                throw new HttpResponseException(resp);
             }
         }
 
         [HttpGet]
-        public IEnumerable<InvoiceDataTransaction> Get()
+        public IHttpActionResult Get(string criteria, string keyword, string startDate, string endDate)
         {
-            var result = new List<InvoiceDataTransaction>();
+            var result = new List<InvoiceDataOutput>();
+            result = inquiryCls.GetInvoiceTransaction(criteria, keyword, startDate, endDate);
 
-            return result;
+            return Ok(result);
         }
     }
 }

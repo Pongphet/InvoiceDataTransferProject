@@ -1,6 +1,5 @@
 ﻿<div class="jumbotron">
-    <h1>Invoice Data Transferred</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
+    <h3>Uploading Invoice Transaction</h3>
 </div>
 <div class="row">
     <div class="col-md-12">
@@ -31,12 +30,13 @@
                 contentType: false,
                 processData: false,
                 data: data,
-                success: function (result) {
-                    alert(result);
+                dataType: 'json',
+                success: function (data, textStatus, xhr) {
+                    alert(data);
                 },
-                error: function (result) {
-                    alert(result);
-                }
+                error: function (xhr, textStatus, errorThrown) {
+                    alert(textStatus);
+                },
             });
         }
     }); 

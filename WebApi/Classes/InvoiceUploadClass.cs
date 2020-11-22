@@ -35,25 +35,32 @@ namespace WebApi.Classes
                             var fileSavePath = Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["fileUpload"]), httpPostedFile.FileName);
                             httpPostedFile.SaveAs(fileSavePath);
 
-                            if ((validation.IsPassedExtensionFile(fileSavePath)) && (validation.IsPassedFileSize(fileSavePath)))
+                            if (validation.IsPassedExtensionFile(fileSavePath))
                             {
-                                var transaction = GetDataFromFile(fileSavePath, Path.GetExtension(fileSavePath).ToUpper());
-                                return new UploadResult() { isSuccess = true, InvoiceDataTransaction = transaction };
+                                if (validation.IsPassedFileSize(fileSavePath))
+                                {
+                                    var transaction = GetDataFromFile(fileSavePath, Path.GetExtension(fileSavePath).ToUpper());
+                                    return new UploadResult() { isSuccess = true, InvoiceDataTransaction = transaction };
+                                }
+                                else
+                                {
+                                    return new UploadResult() { isSuccess = false, ValidationMessage = "file size is over maximum (1 MB.)!" };
+                                }
                             }
                             else
                             {
-                                return new UploadResult() { isSuccess = false };
+                                return new UploadResult() { isSuccess = false, ValidationMessage = "Allowed only type of .csv and .xml file!" };
                             }
                         }
                         else
                         {
-                            return new UploadResult() { isSuccess = false };
+                            return new UploadResult() { isSuccess = false, ValidationMessage = "Not found uploaded files!" };
                         }
                     }
                 }
                 else
                 {
-                    return new UploadResult() { isSuccess = false };
+                    return new UploadResult() { isSuccess = false, ValidationMessage = "Not found uploaded files!" };
                 }
             }
             catch (Exception)
@@ -166,5 +173,6 @@ namespace WebApi.Classes
         public bool isSuccess { get; set; }
         public HttpResponseMessage ResponseMessage { get; set; }
         public List<InvoiceDataTransaction> InvoiceDataTransaction { get; set; }
+        public string ValidationMessage { get; set; }
     }
 }

@@ -17,12 +17,16 @@ namespace WebApi.Models
         public decimal Amount { get; set; }
         [MaxLength(5)]
         public string CurrencyCode { get; set; }
-        [MaxLength(50)]
-        public string TransactionDate { get; set; }
+        public DateTime? TransactionDate { get; set; }
         [MaxLength(10)]
         public string Status { get; set; }
     }
-
+    public class InvoiceDataOutput
+    {
+        public string id { get; set; }
+        public string payment { get; set; }
+        public string Status { get; set; }
+    }
     public class CurrencyCode
     {
         [Key]

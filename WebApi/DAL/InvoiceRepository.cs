@@ -25,8 +25,8 @@ namespace WebApi.DAL
         public List<InvoiceDataTransaction> GetInvoiceByDateRange(DateTime startDate, DateTime endDate)
         {
             var result = context.InvoiceDataTransaction.Where(x =>
-            Convert.ToDateTime(x.TransactionDate) >= startDate &&
-            Convert.ToDateTime(x.TransactionDate) <= endDate).ToList();
+            x.TransactionDate >= startDate &&
+            x.TransactionDate <= endDate).ToList();
             return result;
         }
         public List<InvoiceDataTransaction> GetInvoiceByStatus(string status)
@@ -44,6 +44,20 @@ namespace WebApi.DAL
         {
             var result = context.CurrencyCode.FirstOrDefault(x => x.Code.Equals(code));
             return result;
+        }
+        public StatusMappings GetStatusMapping(string status)
+        {
+            var csvStatus = context.StatusMappings.FirstOrDefault(x => x.CsvStatus.Equals(status));
+            if (csvStatus != null)
+                return csvStatus;
+            else
+            {
+                var xmlStatus = context.StatusMappings.FirstOrDefault(x => x.XmlStatus.Equals(status));
+                if (xmlStatus != null)
+                    return xmlStatus;
+                else
+                    return null;
+            }    
         }
         public StatusMappings GetStatusCsvFile(string status)
         {

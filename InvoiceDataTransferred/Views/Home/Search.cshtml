@@ -1,7 +1,6 @@
 ﻿<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet">
-
 <div class="jumbotron">
-    <h1>Invoice Data Transferred</h1>
+    <h3>Searching Invoice Transaction</h3>
 </div>
 <div class="row">
     <div class="col-md-12">
@@ -23,7 +22,7 @@
                 <div class="form-group">
                     <strong>Start Date:</strong>
                     <div class="input-group date" data-provide="datepicker">
-                        <input type="text" class="form-control" id="search_startdate">
+                        <input type="text" class="form-control" id="search_startdate" data-date-format="yyyy-mm-dd">
                         <div class="input-group-addon">
                             <span class="glyphicon glyphicon-th"></span>
                         </div>
@@ -34,7 +33,7 @@
                 <div class="form-group">
                     <strong>End Date:</strong>
                     <div class="input-group date" data-provide="datepicker">
-                        <input type="text" class="form-control" id="search_startdate">
+                        <input type="text" class="form-control" id="search_enddate" data-date-format="yyyy-mm-dd">
                         <div class="input-group-addon">
                             <span class="glyphicon glyphicon-th"></span>
                         </div>
@@ -46,7 +45,6 @@
             <div class="col-md-3">
                 <button class="btn btn-success" id="btnSearch">Search</button>
             </div>
-
         </div>
     </div>
 </div>
@@ -55,7 +53,12 @@
 <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('.datepicker').datepicker({ format: 'mm/dd/yyyy'});
+        //$('.datepicker').datepicker({ format: 'yyyy-MM-dd' });
+
+        //$('#datatable').DataTable({
+        //    "processing": true,
+        //    "serverSide": true,
+        //});
     });
 
     $('#criteria').change(function () {
@@ -77,7 +80,6 @@
         var keyword = $('#search_val').val();
         var startDate = $('#search_startdate').val();
         var endDate = $('#search_enddate').val();
-
         if (criteria == "Date Range") {
             if ((startDate.length > 0) && (endDate.length > 0)) {
                 GetInvoiceTransaction(criteria, keyword, startDate, endDate);
@@ -93,6 +95,23 @@
     });
 
     function GetInvoiceTransaction(criteria, keyword, startDate, endDate) {
+        var url = new URL("https://localhost:44398/api/Invoice"),
+            params = { criteria: criteria, keyword: keyword, startDate: startDate, endDate: endDate }
+        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+
+        window.location.href = url;
+        //var list = [];
+        //fetch(url, {
+        //    method: 'GET',
+        //    headers: {
+        //        'Content-Type': 'multipart/form-data',
+        //        'Accept': 'application/json'
+        //    },
+        //    mode: 'no-cors',
+        //}).then(function (data) {
+        //    let authors = data.results; // Get the results
+            
+        //    })
 
     }
 </script>

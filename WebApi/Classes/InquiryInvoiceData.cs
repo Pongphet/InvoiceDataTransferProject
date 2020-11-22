@@ -17,6 +17,7 @@ namespace WebApi.Classes
             switch (criteria)
             {
                 case "Currency":
+                    result = repos.GetInvoiceByCurrencyCode(val);
                     break;
                 case "Date Range":
                     break;

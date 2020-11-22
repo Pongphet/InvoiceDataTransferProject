@@ -19,6 +19,11 @@ namespace InvoiceDataTransferred.Controllers
 
         public ActionResult Search()
         {
+            List<string> criteriaList = new List<string>();
+            criteriaList.Add("Currency");
+            criteriaList.Add("Date Range");
+            criteriaList.Add("Status");
+            ViewBag.Criteria = criteriaList;
             return View();
         }
 

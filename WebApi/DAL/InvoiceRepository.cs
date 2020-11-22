@@ -17,6 +17,23 @@ namespace WebApi.DAL
                 x => x.TransactionId.Equals(transactionId));
             return result;
         }
+        public List<InvoiceDataTransaction> GetInvoiceByCurrencyCode(string code)
+        {
+            var result = context.InvoiceDataTransaction.Where(x => x.CurrencyCode.Equals(code)).ToList();
+            return result;
+        }
+        public List<InvoiceDataTransaction> GetInvoiceByDateRange(DateTime startDate, DateTime endDate)
+        {
+            var result = context.InvoiceDataTransaction.Where(x =>
+            Convert.ToDateTime(x.TransactionDate) >= startDate &&
+            Convert.ToDateTime(x.TransactionDate) <= endDate).ToList();
+            return result;
+        }
+        public List<InvoiceDataTransaction> GetInvoiceByStatus(string status)
+        {
+            var result = context.InvoiceDataTransaction.Where(x => x.Status.Equals(status)).ToList();
+            return result;
+        }
         public void InsertInvoiceTransaction(InvoiceDataTransaction entity)
         {
             var invoice = context.Set<InvoiceDataTransaction>();

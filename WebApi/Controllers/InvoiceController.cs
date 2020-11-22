@@ -8,6 +8,7 @@ using System.Web;
 using System.IO;
 using WebApi.Classes;
 using System.Configuration;
+using WebApi.Models;
 
 namespace WebApi.Controllers
 {
@@ -32,6 +33,14 @@ namespace WebApi.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
+        }
+
+        [HttpGet]
+        public IEnumerable<InvoiceDataTransaction> Get()
+        {
+            var result = new List<InvoiceDataTransaction>();
+
+            return result;
         }
     }
 }

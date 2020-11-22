@@ -29,7 +29,7 @@ namespace WebApi.Models
         public int Id { get; set; }
         [MaxLength(50)]
         public string Country { get; set; }
-        [MaxLength(10)]
+        [MaxLength(50)]
         public string Currency { get; set; }
         [MaxLength(5)]
         public string Code { get; set; }

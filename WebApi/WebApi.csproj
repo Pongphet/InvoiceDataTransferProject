@@ -179,6 +179,14 @@
     <Compile Include="Migrations\202011211134109_Add new model for Status Mapppings..designer.cs">
       <DependentUpon>202011211134109_Add new model for Status Mapppings..cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011220827207_Add %27CurrencyCode%27 Model..cs" />
+    <Compile Include="Migrations\202011220827207_Add %27CurrencyCode%27 Model..designer.cs">
+      <DependentUpon>202011220827207_Add %27CurrencyCode%27 Model..cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011220830512_Fix maxlength for %27Currency%27..cs" />
+    <Compile Include="Migrations\202011220830512_Fix maxlength for %27Currency%27..designer.cs">
+      <DependentUpon>202011220830512_Fix maxlength for %27Currency%27..cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\InvoiceModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -273,6 +281,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011211134109_Add new model for Status Mapppings..resx">
       <DependentUpon>202011211134109_Add new model for Status Mapppings..cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011220827207_Add %27CurrencyCode%27 Model..resx">
+      <DependentUpon>202011220827207_Add %27CurrencyCode%27 Model..cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011220830512_Fix maxlength for %27Currency%27..resx">
+      <DependentUpon>202011220830512_Fix maxlength for %27Currency%27..cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

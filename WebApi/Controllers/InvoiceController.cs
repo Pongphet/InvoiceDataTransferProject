@@ -16,7 +16,7 @@ namespace WebApi.Controllers
         private InvoiceUploadClass uploadCls = new InvoiceUploadClass();
 
         [HttpPost]
-        public UploadResult Post()
+        public HttpResponseMessage Post()
         {
             var result = new UploadResult();
             var httpContext = HttpContext.Current;
@@ -25,13 +25,12 @@ namespace WebApi.Controllers
 
             if (result.isSuccess.Equals(true))
             {
-                result.ResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
-                return result;
+                uploadCls.SubmitInvoiceTransaction(result.InvoiceDataTransaction);
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             else
             {
-                result.ResponseMessage = Request.CreateResponse(HttpStatusCode.BadRequest);
-                return result;
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
     }

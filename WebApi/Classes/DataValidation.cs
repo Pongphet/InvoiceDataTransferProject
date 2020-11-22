@@ -10,6 +10,7 @@ using System.Web.Hosting;
 using System.Web.Http;
 using WebApi.Models;
 using WebApi.DAL;
+using System.Globalization;
 
 namespace WebApi.Classes
 {
@@ -95,15 +96,7 @@ namespace WebApi.Classes
         {
             if (dateStr != null)
             {
-                DateTime output;
-                if (DateTime.TryParse(dateStr, out output))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
             else
             {
@@ -163,12 +156,20 @@ namespace WebApi.Classes
             else
                 return string.Empty;
         }
-        public DateTime GetTransactionDate(string dateStr)
+        public string GetTransactionDate(string dateStr)
         {
+            string output = string.Empty;
             if (IsPassedTransactionDate(dateStr))
-                return Convert.ToDateTime(dateStr);
-            else
-                return new DateTime();
+            {
+                string format = "dd/MM/yyyy HH:mm:ss";
+                DateTime tempDateTime;
+                if (DateTime.TryParseExact(dateStr, format, CultureInfo.InvariantCulture,
+                    DateTimeStyles.None, out tempDateTime))
+                {
+                    output = tempDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                }
+            }
+            return output;
         }
         public string GetStatusCode(string status, string fileTypes)
         {

@@ -11,6 +11,18 @@ namespace WebApi.DAL
     {
         private DatabaseContext context = new DatabaseContext();
 
+        public InvoiceDataTransaction GetInvoiceTransactionById(string transactionId)
+        {
+            var result = context.InvoiceDataTransaction.FirstOrDefault(
+                x => x.TransactionId.Equals(transactionId));
+            return result;
+        }
+        public void InsertInvoiceTransaction(InvoiceDataTransaction entity)
+        {
+            var invoice = context.Set<InvoiceDataTransaction>();
+            invoice.Add(entity);
+            context.SaveChanges();
+        }
         public CurrencyCode GetCurrencyCodeByCode(string code)
         {
             var result = context.CurrencyCode.FirstOrDefault(x => x.Code.Equals(code));

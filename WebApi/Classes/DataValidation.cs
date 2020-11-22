@@ -158,18 +158,24 @@ namespace WebApi.Classes
         }
         public string GetTransactionDate(string dateStr)
         {
-            string output = string.Empty;
+            string formatCsv = "dd/MM/yyyy HH:mm:ss";
+            string formatXml = "yyyy-MM-ddTHH:mm:ss";
+            string outputFormat = "yyyy-MM-dd HH:mm:ss";
+
             if (IsPassedTransactionDate(dateStr))
-            {
-                string format = "dd/MM/yyyy HH:mm:ss";
+            {          
                 DateTime tempDateTime;
-                if (DateTime.TryParseExact(dateStr, format, CultureInfo.InvariantCulture,
+                if (DateTime.TryParseExact(dateStr, formatCsv, CultureInfo.InvariantCulture,
                     DateTimeStyles.None, out tempDateTime))
                 {
-                    output = tempDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    dateStr = tempDateTime.ToString(outputFormat);
+                } else if (DateTime.TryParseExact(dateStr, formatXml, CultureInfo.InvariantCulture,
+                    DateTimeStyles.None, out tempDateTime))
+                {
+                    dateStr = tempDateTime.ToString(outputFormat);
                 }
             }
-            return output;
+            return dateStr;
         }
         public string GetStatusCode(string status, string fileTypes)
         {

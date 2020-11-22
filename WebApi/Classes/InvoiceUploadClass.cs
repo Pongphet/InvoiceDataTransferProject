@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Data;
+using System.Xml;
 using Microsoft.VisualBasic.FileIO;
 using WebApi.Models;
 using WebApi.DAL;
@@ -82,6 +83,7 @@ namespace WebApi.Classes
                     transaction = GetInvoiceTransactionFromCsvFile(path);
                     break;
                 case ".XML":
+                    transaction = GetInvoiceTransactionFromXmlFile(path);
                     break;
             }
 
@@ -101,12 +103,58 @@ namespace WebApi.Classes
                 if (fields.Count() == 5)
                 {
                     var items = new InvoiceDataTransaction();
-                    items.TransactionId = validation.GetTransactionId(fields[0].Trim()) ;
+                    items.TransactionId = validation.GetTransactionId(fields[0].Trim());
                     items.Amount = validation.GetAmount(fields[1].Trim());
                     items.CurrencyCode = validation.GetCurrencyCode(fields[2].ToUpper().Trim());
                     items.TransactionDate = validation.GetTransactionDate(fields[3].Trim());
                     items.Status = validation.GetStatusCode(fields[4].Trim(), ".CSV");
                     transaction.Add(items);
+                }
+            }
+            return transaction;
+        }
+        private List<InvoiceDataTransaction> GetInvoiceTransactionFromXmlFile(string path)
+        {
+            var transaction = new List<InvoiceDataTransaction>();
+            var items = new InvoiceDataTransaction();
+            string element = string.Empty;
+            XmlReader xmlReader = XmlReader.Create(path);
+            while (xmlReader.Read())
+            {
+                switch (xmlReader.NodeType)
+                {
+                    case XmlNodeType.Element: // The node is an element.
+                        if ((xmlReader.Name == "Transaction") && (xmlReader.HasAttributes))
+                        {
+                            items = new InvoiceDataTransaction();
+                            items.TransactionId = xmlReader.GetAttribute("id");
+                        }
+                        element = xmlReader.Name;
+                        break;
+                    case XmlNodeType.Text:
+                        if (element == "TransactionDate")
+                        {
+                            items.TransactionDate = validation.GetTransactionDate(xmlReader.Value);
+                        }
+                        else if (element == "Amount")
+                        {
+                            items.Amount = validation.GetAmount(xmlReader.Value);
+                        }
+                        else if (element == "CurrencyCode")
+                        {
+                            items.CurrencyCode = validation.GetCurrencyCode(xmlReader.Value);
+                        }
+                        else if (element == "Status")
+                        {
+                            items.Status = validation.GetStatusCode(xmlReader.Value, ".XML");
+                        }
+                        break;
+                    case XmlNodeType.EndElement:
+                        if (xmlReader.Name == "Status")
+                        {
+                            transaction.Add(items);
+                        }
+                        break;
                 }
             }
             return transaction;

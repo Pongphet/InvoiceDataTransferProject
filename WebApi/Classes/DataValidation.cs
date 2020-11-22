@@ -9,10 +9,13 @@ using System.Net.Http;
 using System.Web.Hosting;
 using System.Web.Http;
 using WebApi.Models;
+using WebApi.DAL;
+
 namespace WebApi.Classes
 {
     public class DataValidation
     {
+        private InvoiceRepository repos = new InvoiceRepository();
         public bool IsPassedExtensionFile(string path)
         {
             string extension = Path.GetExtension(path);
@@ -69,24 +72,82 @@ namespace WebApi.Classes
             }
 
         }
-        //public bool IsPassedCurrencyCode(string code)
-        //{
+        public bool IsPassedCurrencyCode(string code)
+        {
+            if (code != null)
+            {
+                var master = repos.GetCurrencyCodeByCode(code);
+                if (master != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool IsPassedTransactionDate(string dateStr)
+        {
+            if (dateStr != null)
+            {
+                DateTime output;
+                if (DateTime.TryParse(dateStr, out output))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool IsPassedStatus(string status, string fileTypes)
+        {
+            if (status != null)
+            {
+                var master = new StatusMappings();
+                if (fileTypes.Equals(".CSV"))
+                {
+                    master = repos.GetStatusCsvFile(status);
+                }
+                else if (fileTypes.Equals(".XML"))
+                {
+                    master = repos.GetStatusXmlFile(status);
+                }
+                else
+                {
+                    return false;
+                }
 
-        //}
-        //public bool IsPassedTransactionDate(string dateStr)
-        //{
-
-        //}
-        //public bool IsPassedStatus(string status)
-        //{
-
-        //}
+                if (master != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
         public string GetTransactionId(string transactionId)
         {
             if (IsPassedValidateTransactionId(transactionId))
-               return transactionId;
+                return transactionId;
             else
-               return string.Empty;
+                return string.Empty;
         }
         public decimal GetAmount(string amount)
         {
@@ -94,6 +155,27 @@ namespace WebApi.Classes
                 return Convert.ToDecimal(amount);
             else
                 return 0;
+        }
+        public string GetCurrencyCode(string code)
+        {
+            if (IsPassedCurrencyCode(code))
+                return code;
+            else
+                return string.Empty;
+        }
+        public DateTime GetTransactionDate(string dateStr)
+        {
+            if (IsPassedTransactionDate(dateStr))
+                return Convert.ToDateTime(dateStr);
+            else
+                return new DateTime();
+        }
+        public string GetStatusCode(string status, string fileTypes)
+        {
+            if (IsPassedStatus(status, fileTypes))
+                return status;
+            else
+                return string.Empty;
         }
     }
 }

@@ -81,8 +81,11 @@ namespace WebApi.Classes
                 if (data.Count() == 5)
                 {
                     var items = new InvoiceDataTransaction();
-                    //items.TransactionId = validation.GetTransactionId(data[0]);
-                    //items.Amount = validation.GetAmount(data[1]);
+                    items.TransactionId = validation.GetTransactionId(data[0]);
+                    items.Amount = validation.GetAmount(data[1]);
+                    items.CurrencyCode = validation.GetCurrencyCode(data[2]);
+                    items.TransactionDate = validation.GetTransactionDate(data[3]);
+                    items.Status = validation.GetStatusCode(data[4], ".CSV");
                 }
             }
             return transaction;

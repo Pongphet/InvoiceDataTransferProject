@@ -14,9 +14,9 @@ namespace WebApi.Classes
 {
     public class InvoiceUploadClass
     {
-        public bool SaveFile(HttpContext Request)
+        private DataValidation validation = new DataValidation();
+        public UploadResult SaveFile(HttpContext Request)
         {
-            bool isSuccess = false;
             try
             {
                 if (Request.Request.Files.Count > 0)
@@ -27,56 +27,72 @@ namespace WebApi.Classes
                         if (httpPostedFile != null)
                         {
                             var fileSavePath = Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["fileUpload"]), httpPostedFile.FileName);
-                            if ((IsPassedExtensionFile(fileSavePath)) && (IsPassedFileSize(fileSavePath)))
+                            if ((validation.IsPassedExtensionFile(fileSavePath)) && (validation.IsPassedFileSize(fileSavePath)))
                             {
                                 httpPostedFile.SaveAs(fileSavePath);
-                                return true;
+                                var transaction = GetDataFromFile(fileSavePath, Path.GetExtension(fileSavePath));
+                                return new UploadResult() { isSuccess = true, InvoiceDataTransaction = transaction };
                             }
                             else
                             {
-                                return false;
+                                return new UploadResult() { isSuccess = false };
                             }
                         }
+                        else
+                        {
+                            return new UploadResult() { isSuccess = false };
+                        }
                     }
+                }
+                else
+                {
+                    return new UploadResult() { isSuccess = false };
                 }
             }
             catch (Exception)
             {
-                return false;
+                return new UploadResult() { isSuccess = false };
             }
-            return isSuccess;
+            return new UploadResult() { isSuccess = false };
         }
-        private bool IsPassedExtensionFile(string path)
-        {
-            string extension = Path.GetExtension(path);
-            if ((extension.ToUpper().Equals(".CSV")) || (extension.ToUpper().Equals(".XML")))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        private bool IsPassedFileSize(string path)
-        {
-            FileInfo files = new FileInfo(path);
-            long size = files.Length;
-            if (files.Length > 1000000)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
 
-        }
-        private List<InvoiceDataTransaction> GetDataFromFile()
+        private List<InvoiceDataTransaction> GetDataFromFile(string path, string extension)
         {
             var transaction = new List<InvoiceDataTransaction>();
 
+            switch (extension)
+            {
+                case ".CSV":
+                    transaction = GetInvoiceTransactionFromCsvFile(path);
+                    break;
+                case ".XML":
+                    break;
+            }
+
             return transaction;
         }
+        private List<InvoiceDataTransaction> GetInvoiceTransactionFromCsvFile(string path)
+        {
+            var transaction = new List<InvoiceDataTransaction>();
+            string[] lines = System.IO.File.ReadAllLines(path);
+            foreach (string line in lines)
+            {
+                string[] data = line.Split(',');
+                if (data.Count() == 5)
+                {
+                    var items = new InvoiceDataTransaction();
+                    //items.TransactionId = validation.GetTransactionId(data[0]);
+                    //items.Amount = validation.GetAmount(data[1]);
+                }
+            }
+            return transaction;
+        }
+    }
+
+    public class UploadResult
+    {
+        public bool isSuccess { get; set; }
+        public HttpResponseMessage ResponseMessage { get; set; }
+        public List<InvoiceDataTransaction> InvoiceDataTransaction { get; set; }
     }
 }

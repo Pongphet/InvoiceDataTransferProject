@@ -14,6 +14,7 @@ namespace WebApi.Data
         }
 
         public DbSet<InvoiceDataTransaction> InvoiceDataTransaction { get; set; }
+        public DbSet<CurrencyCode> CurrencyCode { get; set; }
         public DbSet<StatusMappings> StatusMappings { get; set; }
     }
 }

@@ -40,6 +40,19 @@ namespace WebApi.DAL
             invoice.Add(entity);
             context.SaveChanges();
         }
+
+        public void InsertStatusMapping(StatusMappings entity)
+        {
+            var status = context.Set<StatusMappings>();
+            status.Add(entity);
+            context.SaveChanges();
+        }
+        public void InsertCurrencyCode(CurrencyCode entity)
+        {
+            var currencyCodes = context.Set<CurrencyCode>();
+            currencyCodes.Add(entity);
+            context.SaveChanges();
+        }
         public CurrencyCode GetCurrencyCodeByCode(string code)
         {
             var result = context.CurrencyCode.FirstOrDefault(x => x.Code.Equals(code));
